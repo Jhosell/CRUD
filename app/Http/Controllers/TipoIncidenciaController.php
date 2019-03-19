@@ -7,79 +7,52 @@ use Illuminate\Http\Request;
 
 class TipoIncidenciaController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
-        //
+        $qs = TipoIncidencia::all();
+
+        return $qs;
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
-        //
+        return view('tipocreate');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-        //
+        $tipo = new TipoIncidencia();
+        $tipo->tipo = $request['tipo'];
+        $tipo->save();
+        return redirect('tipos/list');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\TipoIncidencia  $tipoIncidencia
-     * @return \Illuminate\Http\Response
-     */
-    public function show(TipoIncidencia $tipoIncidencia)
+    public function show(TipoIncidencia $tipo)
     {
-        //
+        return $tipo;
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\TipoIncidencia  $tipoIncidencia
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(TipoIncidencia $tipoIncidencia)
+    public function edit(TipoIncidencia $tipo)
     {
-        //
+        return view('editartipo', ['tipo' => $tipo]);//ojo se llama a la vista
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\TipoIncidencia  $tipoIncidencia
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, TipoIncidencia $tipoIncidencia)
+    public function update(Request $request, TipoIncidencia $tipo)
     {
-        //
+        $tipo->tipo = $request['tipo'];
+        $tipo->save();
+        return redirect('tipos/list');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\TipoIncidencia  $tipoIncidencia
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(TipoIncidencia $tipoIncidencia)
+    public function list()
+     {
+        $rs = $this->index();
+        return view('listatipos', ['rs' => $rs]);
+    }
+
+    public function destroy(TipoIncidencia $tipo)
     {
-        //
+        $tipo->delete(); //la bariable que creamos $tipo es la misma que utiliza en el formulario list para eliminar el item
+        return redirect('tipos/list');
     }
 }
